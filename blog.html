@@ -22,6 +22,7 @@
       --border: rgba(201,168,76,0.2);
     }
     * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
 
     body {
       font-family: 'EB Garamond', serif;
@@ -31,6 +32,7 @@
       overflow-x: hidden;
     }
 
+    /* 星空背景 */
     body::before {
       content: '';
       position: fixed; inset: 0;
@@ -38,8 +40,10 @@
         radial-gradient(1px 1px at 15% 25%, rgba(201,168,76,0.5) 0%, transparent 100%),
         radial-gradient(1px 1px at 30% 70%, rgba(77,175,111,0.4) 0%, transparent 100%),
         radial-gradient(1px 1px at 55% 15%, rgba(201,168,76,0.6) 0%, transparent 100%),
-        radial-gradient(1px 1px at 70% 85%, rgba(77,175,111,0.3) 0%, transparent 100%),
-        radial-gradient(1px 1px at 88% 40%, rgba(201,168,76,0.5) 0%, transparent 100%);
+        radial-gradient(1.5px 1.5px at 70% 85%, rgba(201,168,76,0.7) 0%, transparent 100%),
+        radial-gradient(1px 1px at 88% 40%, rgba(77,175,111,0.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 42% 55%, rgba(201,168,76,0.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 95% 20%, rgba(77,175,111,0.3) 0%, transparent 100%);
       pointer-events: none; z-index: 0;
       animation: twinkle 6s ease-in-out infinite alternate;
     }
@@ -52,7 +56,7 @@
       pointer-events: none; z-index: 0;
     }
 
-    /* HEADER */
+    /* ── HEADER ── */
     header {
       position: relative; z-index: 10;
       padding: 40px 20px 30px;
@@ -67,38 +71,38 @@
       letter-spacing: 4px;
       text-shadow: 0 0 30px rgba(201,168,76,0.5);
     }
-    .subtitle { font-family:'Cinzel',serif; font-size:10px; letter-spacing:5px; color:var(--green-mid); margin-top:6px; }
-    nav { display:flex; justify-content:center; gap:36px; margin-top:22px; }
+    .subtitle {
+      font-family: 'Cinzel', serif;
+      font-size: 10px; letter-spacing: 5px;
+      color: var(--green-mid); margin-top: 6px;
+    }
+    nav { display: flex; justify-content: center; gap: 36px; margin-top: 22px; }
     nav a {
-      font-family:'Cinzel',serif; font-size:11px; letter-spacing:3px;
-      color:var(--text-dim); text-decoration:none;
-      position:relative; padding-bottom:4px; transition:color .3s;
+      font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 3px;
+      color: var(--text-dim); text-decoration: none;
+      position: relative; padding-bottom: 4px; transition: color .3s;
     }
     nav a::after {
-      content:''; position:absolute; bottom:0; left:50%; right:50%;
-      height:1px; background:var(--gold); transition:left .3s, right .3s;
+      content: ''; position: absolute; bottom: 0; left: 50%; right: 50%;
+      height: 1px; background: var(--gold); transition: left .3s, right .3s;
     }
-    nav a:hover { color:var(--gold-light); }
-    nav a:hover::after { left:0; right:0; }
-    nav a.active { color:var(--gold); }
+    nav a:hover { color: var(--gold-light); }
+    nav a:hover::after { left: 0; right: 0; }
+    nav a.active { color: var(--gold); }
 
-    /* PAGE TITLE */
+    /* ── PAGE TITLE ── */
     .page-title {
       position: relative; z-index: 5;
-      padding: 50px 20px 30px;
-      text-align: center;
+      padding: 50px 20px 40px; text-align: center;
     }
     .page-title h2 {
-      font-family: 'Cinzel', serif;
-      font-size: 11px; letter-spacing: 6px;
+      font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 6px;
       color: var(--green-bright); text-transform: uppercase;
     }
     .title-deco {
       font-family: 'Cinzel Decorative', serif;
-      font-size: clamp(28px, 5vw, 48px);
-      color: var(--text);
-      margin-top: 10px;
-      letter-spacing: 2px;
+      font-size: clamp(26px, 4.5vw, 44px);
+      color: var(--text); margin-top: 10px; letter-spacing: 2px;
     }
     .page-sep {
       width: 120px; height: 1px;
@@ -106,147 +110,98 @@
       margin: 20px auto;
     }
 
-    /* FILTER */
-    .filter-bar {
-      position: relative; z-index: 5;
-      display: flex; justify-content: center;
-      gap: 10px; flex-wrap: wrap;
-      padding: 0 20px 40px;
-    }
-    .filter-btn {
-      font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 2px;
-      color: var(--text-dim); background: transparent;
-      border: 1px solid var(--border); padding: 7px 18px;
-      border-radius: 1px; cursor: pointer; transition: all .3s;
-      text-transform: uppercase;
-    }
-    .filter-btn:hover, .filter-btn.active {
-      color: var(--gold); border-color: rgba(201,168,76,0.5);
-      background: rgba(201,168,76,0.05);
-    }
-
-    /* BLOG CONTAINER */
+    /* ── CONTAINER ── */
     .container {
       position: relative; z-index: 5;
-      max-width: 760px; margin: 0 auto;
-      padding: 0 20px 80px;
+      max-width: 720px; margin: 0 auto;
+      padding: 0 24px 80px;
     }
 
-    /* FEATURED POST */
-    .post-featured {
-      background: linear-gradient(135deg, rgba(26,74,46,0.15), var(--bg2));
-      border: 1px solid rgba(201,168,76,0.35);
-      padding: 40px 36px;
-      margin-bottom: 32px;
-      position: relative; overflow: hidden;
-      transition: border-color .3s;
+    /* ── POST ── */
+    .post {
+      margin-bottom: 0;
+      padding: 44px 0;
+      border-bottom: 1px solid var(--border);
+      position: relative;
     }
-    .post-featured::before {
-      content: '✦ FEATURED ✦';
-      font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 4px;
-      color: var(--gold);
-      position: absolute; top: 16px; right: 20px;
-    }
-    .post-featured::after {
+    .post:last-child { border-bottom: none; }
+
+    /* 左のアクセントライン */
+    .post::before {
       content: '';
-      position: absolute; top: 0; left: 0;
-      width: 3px; height: 100%;
+      position: absolute; left: -24px; top: 44px;
+      width: 2px; height: 0;
       background: linear-gradient(180deg, var(--gold), var(--green-mid));
+      transition: height .5s cubic-bezier(.2,.8,.2,1);
     }
-    .post-featured:hover { border-color: rgba(201,168,76,0.6); }
+    .post:hover::before { height: calc(100% - 88px); }
 
-    /* REGULAR POST */
-    .post-card {
-      display: grid;
-      grid-template-columns: 80px 1fr;
-      gap: 0;
-      border: 1px solid var(--border);
-      margin-bottom: 16px;
-      background: var(--bg2);
-      transition: border-color .3s, transform .3s;
-      position: relative; overflow: hidden;
-    }
-    .post-card:hover { border-color: rgba(201,168,76,0.4); transform: translateX(3px); }
-    .post-card-date {
-      background: linear-gradient(180deg, rgba(26,74,46,0.3), rgba(13,26,18,0.5));
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      padding: 20px 10px;
-      border-right: 1px solid var(--border);
-      font-family: 'Cinzel', serif;
-    }
-    .post-card-date .day { font-size: 22px; color: var(--gold); font-weight: 600; }
-    .post-card-date .month { font-size: 9px; letter-spacing: 2px; color: var(--text-dim); margin-top: 2px; }
-    .post-card-body { padding: 20px 24px; }
-
+    /* 記事タグ */
     .post-tag {
       font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 3px;
-      color: var(--green-mid); text-transform: uppercase; margin-bottom: 8px;
+      color: var(--green-mid); text-transform: uppercase;
+      margin-bottom: 10px;
+      display: flex; align-items: center; gap: 10px;
     }
-    .post-title {
-      font-family: 'Cinzel', serif; font-size: 16px;
-      color: var(--text); text-decoration: none; font-weight: 600;
-      display: block; line-height: 1.4; transition: color .3s;
+    .post-tag::after {
+      content: ''; flex: 0 0 40px; height: 1px;
+      background: linear-gradient(90deg, var(--green-mid), transparent);
     }
-    .post-title:hover { color: var(--gold-light); }
-    .post-featured .post-title { font-size: 20px; }
-    .post-excerpt {
-      font-size: 14px; color: var(--text-dim);
-      margin-top: 10px; line-height: 1.8; font-style: italic;
+
+    /* タイトル */
+    .post h2 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(17px, 2.5vw, 22px);
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.5;
+      margin-bottom: 10px;
+      transition: color .3s;
+      cursor: default;
     }
-    .post-meta {
-      display: flex; gap: 16px; align-items: center;
-      margin-top: 14px;
+    .post:hover h2 { color: var(--gold-light); }
+
+    /* 日付 */
+    .date {
+      font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 2px;
+      color: var(--gold-dim); margin-bottom: 22px;
+      display: flex; align-items: center; gap: 10px;
     }
-    .post-meta span {
-      font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 2px;
-      color: var(--gold-dim);
+    .date::before { content: '✦'; font-size: 8px; color: var(--gold-dim); }
+
+    /* 本文 */
+    .content {
+      font-size: 16px; line-height: 2;
+      color: var(--text-dim);
     }
+    .content p { margin-bottom: 16px; }
+    .content p:last-child { margin-bottom: 0; }
+    .content strong { color: var(--gold); font-weight: 500; }
+    .content em { color: var(--text); font-style: italic; }
+
+    /* 続きを読む */
     .read-more {
+      display: inline-flex; align-items: center; gap: 8px;
       font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 2px;
       color: var(--green-mid); text-decoration: none;
-      border-bottom: 1px solid transparent; transition: border-color .3s, color .3s;
-      margin-top: 16px; display: inline-block;
+      margin-top: 20px;
+      border-bottom: 1px solid transparent;
+      transition: color .3s, border-color .3s;
     }
     .read-more:hover { color: var(--gold); border-color: var(--gold-dim); }
+    .read-more::after { content: '→'; }
 
-    /* PAGINATION */
-    .pagination {
-      display: flex; justify-content: center;
-      gap: 8px; margin-top: 50px;
-    }
-    .page-num {
-      font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 1px;
-      width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
-      border: 1px solid var(--border); color: var(--text-dim);
-      cursor: pointer; transition: all .3s; text-decoration: none;
-    }
-    .page-num:hover, .page-num.active { color: var(--gold); border-color: rgba(201,168,76,0.5); background: rgba(201,168,76,0.05); }
-
-    /* SIDEBAR-LIKE TAG CLOUD */
-    .tags-section {
-      margin-top: 60px; padding-top: 40px;
-      border-top: 1px solid var(--border);
-    }
-    .tags-head {
-      font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 4px;
-      color: var(--green-bright); text-transform: uppercase; margin-bottom: 20px;
-    }
-    .tags-cloud { display: flex; flex-wrap: wrap; gap: 8px; }
-    .tag {
-      font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 2px;
-      color: var(--text-dim); border: 1px solid var(--border);
-      padding: 6px 14px; cursor: pointer; transition: all .3s; text-transform: uppercase;
-    }
-    .tag:hover { color: var(--gold); border-color: rgba(201,168,76,0.4); }
-
+    /* ── FOOTER ── */
     footer {
       position: relative; z-index: 5;
-      border-top: 1px solid var(--border); padding: 28px 20px;
-      text-align: center;
+      border-top: 1px solid var(--border);
+      padding: 28px 20px; text-align: center;
       background: linear-gradient(0deg, rgba(26,74,46,0.08), transparent);
     }
-    footer p { font-family:'Cinzel',serif; font-size:10px; letter-spacing:3px; color:var(--text-dim); }
+    footer p {
+      font-family: 'Cinzel', serif; font-size: 10px;
+      letter-spacing: 3px; color: var(--text-dim);
+    }
   </style>
 </head>
 <body>
@@ -268,137 +223,75 @@
     <div class="page-sep"></div>
   </div>
 
-  <div class="filter-bar">
-    <button class="filter-btn active">ALL</button>
-    <button class="filter-btn">ESSAY</button>
-    <button class="filter-btn">THOUGHTS</button>
-    <button class="filter-btn">THEORY</button>
-    <button class="filter-btn">REREAD</button>
-  </div>
-
   <div class="container">
 
-    <!-- FEATURED -->
-    <div class="post-featured">
+    <!-- 記事① -->
+    <div class="post">
       <div class="post-tag">Essay</div>
-      <a href="#" class="post-title">第○話のこのシーンが好きすぎる — 感情がぐちゃぐちゃになるやつ</a>
-      <p class="post-excerpt">
-        何度見ても、何度読んでも同じところで心がざわつく。理由を言語化しようとするんだけど、うまくいかない。
-        でも、それがいいんだと思う。言葉になりきらない感情を揺さぶってくれる作品ってそう多くない。
-      </p>
-      <div class="post-meta">
-        <span>2024.XII.I</span>
-        <span>·</span>
-        <span>5 min read</span>
-      </div>
-      <a href="#" class="read-more">Continue Reading →</a>
-    </div>
-
-    <!-- POSTS -->
-    <div class="post-card">
-      <div class="post-card-date">
-        <span class="day">15</span>
-        <span class="month">NOV</span>
-      </div>
-      <div class="post-card-body">
-        <div class="post-tag">Thoughts</div>
-        <a href="#" class="post-title">この表情なんなんだろう</a>
-        <p class="post-excerpt">分からないけどめちゃくちゃ好き。言葉にできないけど絶対に好きなやつ。</p>
-        <a href="#" class="read-more">Read →</a>
+      <h2>第○話のこのシーンが好きすぎる</h2>
+      <div class="date">2026.04.21</div>
+      <div class="content">
+        <p>
+          このシーン、正直うまく言葉にできないんだけど、なんか妙に引っかかるんだよね。
+        </p>
+        <p>
+          理由は分からないけど、何回も見返してしまう。こういう感覚があるから、この作品好きなんだと思う。
+        </p>
       </div>
     </div>
 
-    <div class="post-card">
-      <div class="post-card-date">
-        <span class="day">02</span>
-        <span class="month">NOV</span>
-      </div>
-      <div class="post-card-body">
-        <div class="post-tag">Theory</div>
-        <a href="#" class="post-title">スネイプについて延々と語りたい</a>
-        <p class="post-excerpt">何度読んでも新しい発見がある。本当に天才的なキャラクターだと思う。</p>
-        <a href="#" class="read-more">Read →</a>
-      </div>
-    </div>
-
-    <div class="post-card">
-      <div class="post-card-date">
-        <span class="day">20</span>
-        <span class="month">OCT</span>
-      </div>
-      <div class="post-card-body">
-        <div class="post-tag">Reread</div>
-        <a href="#" class="post-title">読み返したら全然違う話だった</a>
-        <p class="post-excerpt">子供の頃とは全く別の読み方ができる。伏線の量が異常すぎる。</p>
-        <a href="#" class="read-more">Read →</a>
+    <!-- 記事② -->
+    <div class="post">
+      <div class="post-tag">Thoughts</div>
+      <h2>この表情なんなんだろう</h2>
+      <div class="date">2026.04.20</div>
+      <div class="content">
+        <p>
+          分からないけどめちゃくちゃ好き。言葉にできないけど絶対に好きなやつ。
+        </p>
+        <p>
+          むしろその曖昧さが魅力なのかもしれない。
+        </p>
       </div>
     </div>
 
-    <div class="post-card">
-      <div class="post-card-date">
-        <span class="day">08</span>
-        <span class="month">OCT</span>
-      </div>
-      <div class="post-card-body">
-        <div class="post-tag">Essay</div>
-        <a href="#" class="post-title">ハーミオーニーがなぜ一番好きなのか</a>
-        <p class="post-excerpt">ずっと好きだけど、なぜ好きなのか改めて考えてみた。</p>
-        <a href="#" class="read-more">Read →</a>
-      </div>
-    </div>
-
-    <div class="post-card">
-      <div class="post-card-date">
-        <span class="day">22</span>
-        <span class="month">SEP</span>
-      </div>
-      <div class="post-card-body">
-        <div class="post-tag">Thoughts</div>
-        <a href="#" class="post-title">魔法世界の「当たり前」が羨ましい</a>
-        <p class="post-excerpt">日常的に魔法がある世界で育つってどういう感覚なんだろう、と考え始めたら止まらなかった。</p>
-        <a href="#" class="read-more">Read →</a>
+    <!-- 記事③ -->
+    <div class="post">
+      <div class="post-tag">Theory</div>
+      <h2>スネイプについて延々と語りたい</h2>
+      <div class="date">2026.04.10</div>
+      <div class="content">
+        <p>
+          何度読んでも新しい発見がある。本当に天才的なキャラクターだと思う。
+        </p>
+        <p>
+          最初に読んだときと、全部読み終わってから読み返したときとで、全く違う人物に見える。
+          それがたまらない。
+        </p>
       </div>
     </div>
 
-    <!-- PAGINATION -->
-    <div class="pagination">
-      <a href="#" class="page-num active">1</a>
-      <a href="#" class="page-num">2</a>
-      <a href="#" class="page-num">3</a>
-      <a href="#" class="page-num">→</a>
-    </div>
-
-    <!-- TAGS -->
-    <div class="tags-section">
-      <div class="tags-head">✦ Tags & Subjects</div>
-      <div class="tags-cloud">
-        <span class="tag">Gryffindor</span>
-        <span class="tag">Snape</span>
-        <span class="tag">Hermione</span>
-        <span class="tag">Theory</span>
-        <span class="tag">Book 7</span>
-        <span class="tag">Dumbledore</span>
-        <span class="tag">Hogwarts</span>
-        <span class="tag">Reread</span>
-        <span class="tag">Movie vs Book</span>
-        <span class="tag">Fave Scenes</span>
-        <span class="tag">Dark Arts</span>
-        <span class="tag">Marauders</span>
+    <!-- 記事④ -->
+    <div class="post">
+      <div class="post-tag">Reread</div>
+      <h2>読み返したら全然違う話だった</h2>
+      <div class="date">2026.03.28</div>
+      <div class="content">
+        <p>
+          子供の頃とは全く別の読み方ができる。伏線の量が異常すぎる。
+        </p>
+        <p>
+          大人になってから読むと、ハーミオーニーのことが一番刺さる。
+          なんであんなに必死に勉強してたのか、今ならちょっと分かる気がして。
+        </p>
       </div>
     </div>
+
   </div>
 
   <footer>
     <p>© The Wizarding Chronicle &nbsp;✦&nbsp; A Fan's Log</p>
   </footer>
 
-  <script>
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-      });
-    });
-  </script>
 </body>
 </html>
