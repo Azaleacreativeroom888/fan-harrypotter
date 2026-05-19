@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery — The Wizarding Chronicle</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #c9a84c;
+      --gold-light: #f0d080;
+      --gold-dim: #7a5f28;
+      --green: #1a4a2e;
+      --green-mid: #2d7a4f;
+      --green-bright: #4CAF6f;
+      --bg: #08100c;
+      --bg2: #0d1a12;
+      --bg3: #111f17;
+      --text: #d4c5a0;
+      --text-dim: #8a7a5a;
+      --border: rgba(201,168,76,0.2);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      font-family: 'EB Garamond', serif;
+      background: var(--bg); color: var(--text);
+      min-height: 100vh; overflow-x: hidden;
+    }
+
+    body::before {
+      content:''; position:fixed; inset:0;
+      background-image:
+        radial-gradient(1px 1px at 8% 30%, rgba(201,168,76,0.6) 0%, transparent 100%),
+        radial-gradient(1px 1px at 22% 75%, rgba(77,175,111,0.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 48% 20%, rgba(201,168,76,0.5) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 65% 60%, rgba(201,168,76,0.7) 0%, transparent 100%),
+        radial-gradient(1px 1px at 82% 35%, rgba(77,175,111,0.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 93% 80%, rgba(201,168,76,0.4) 0%, transparent 100%);
+      pointer-events:none; z-index:0;
+      animation: twinkle 7s ease-in-out infinite alternate;
+    }
+    @keyframes twinkle { 0%{opacity:.5} 100%{opacity:1} }
+
+    body::after {
+      content:''; position:fixed; inset:0;
+      background: radial-gradient(ellipse at 50% 100%, rgba(26,74,46,0.2) 0%, transparent 60%);
+      pointer-events:none; z-index:0;
+    }
+
+    header {
+      position:relative; z-index:10;
+      padding:40px 20px 30px; text-align:center;
+      border-bottom:1px solid var(--border);
+      background:linear-gradient(180deg, rgba(26,74,46,0.12) 0%, transparent 100%);
+    }
+    header h1 {
+      font-family:'Cinzel Decorative',serif;
+      font-size:clamp(18px,3vw,28px); color:var(--gold-light);
+      letter-spacing:4px; text-shadow:0 0 30px rgba(201,168,76,0.5);
+    }
+    .subtitle { font-family:'Cinzel',serif; font-size:10px; letter-spacing:5px; color:var(--green-mid); margin-top:6px; }
+    nav { display:flex; justify-content:center; gap:36px; margin-top:22px; }
+    nav a {
+      font-family:'Cinzel',serif; font-size:11px; letter-spacing:3px;
+      color:var(--text-dim); text-decoration:none;
+      position:relative; padding-bottom:4px; transition:color .3s;
+    }
+    nav a::after {
+      content:''; position:absolute; bottom:0; left:50%; right:50%;
+      height:1px; background:var(--gold); transition:left .3s, right .3s;
+    }
+    nav a:hover { color:var(--gold-light); }
+    nav a:hover::after { left:0; right:0; }
+    nav a.active { color:var(--gold); }
+
+    .page-title {
+      position:relative; z-index:5;
+      padding:50px 20px 20px; text-align:center;
+    }
+    .page-title h2 {
+      font-family:'Cinzel',serif; font-size:11px; letter-spacing:6px;
+      color:var(--green-bright); text-transform:uppercase;
+    }
+    .title-deco {
+      font-family:'Cinzel Decorative',serif;
+      font-size:clamp(28px,5vw,48px); color:var(--text);
+      margin-top:10px; letter-spacing:2px;
+    }
+    .page-sep {
+      width:120px; height:1px;
+      background:linear-gradient(90deg,transparent,var(--gold),transparent);
+      margin:20px auto 10px;
+    }
+    .page-desc {
+      font-size:15px; font-style:italic;
+      color:var(--text-dim); max-width:500px;
+      margin:0 auto 40px; line-height:1.8;
+    }
+
+    /* FILTER */
+    .filter-bar {
+      position:relative; z-index:5;
+      display:flex; justify-content:center;
+      gap:10px; flex-wrap:wrap; padding:0 20px 40px;
+    }
+    .filter-btn {
+      font-family:'Cinzel',serif; font-size:10px; letter-spacing:2px;
+      color:var(--text-dim); background:transparent;
+      border:1px solid var(--border); padding:7px 18px;
+      cursor:pointer; transition:all .3s; text-transform:uppercase;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      color:var(--gold); border-color:rgba(201,168,76,0.5);
+      background:rgba(201,168,76,0.05);
+    }
+
+    /* MASONRY GALLERY */
+    .gallery-container {
+      position:relative; z-index:5;
+      max-width:1100px; margin:0 auto;
+      padding:0 20px 80px;
+      columns: 3 280px;
+      column-gap: 16px;
+    }
+    @media(max-width:600px){ .gallery-container { columns: 2 160px; } }
+
+    .gallery-item {
+      break-inside: avoid;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--bg3);
+      cursor: pointer;
+      transition: border-color .3s, transform .3s;
+    }
+    .gallery-item:hover {
+      border-color: rgba(201,168,76,0.6);
+      transform: scale(1.01);
+    }
+    .gallery-item img {
+      width:100%; display:block;
+      transition: transform .5s, filter .5s;
+      filter: brightness(.8) saturate(.9);
+    }
+    .gallery-item:hover img {
+      transform: scale(1.04);
+      filter: brightness(1) saturate(1.1);
+    }
+
+    /* Placeholder items */
+    .gallery-placeholder {
+      aspect-ratio: var(--ratio, 1);
+      display:flex; align-items:center; justify-content:center;
+      flex-direction:column; gap:10px;
+      background: linear-gradient(135deg, var(--bg2), var(--bg3));
+      padding:40px 20px;
+    }
+    .gallery-placeholder .icon { font-size:40px; opacity:.25; }
+    .gallery-placeholder .ph-label {
+      font-family:'Cinzel',serif; font-size:9px; letter-spacing:3px;
+      color:var(--gold-dim); text-transform:uppercase;
+    }
+
+    /* OVERLAY */
+    .gallery-overlay {
+      position:absolute; inset:0;
+      background:linear-gradient(180deg, transparent 50%, rgba(8,16,12,0.9) 100%);
+      opacity:0; transition:opacity .3s;
+      display:flex; flex-direction:column;
+      justify-content:flex-end; padding:20px;
+    }
+    .gallery-item:hover .gallery-overlay { opacity:1; }
+    .overlay-tag {
+      font-family:'Cinzel',serif; font-size:9px; letter-spacing:3px;
+      color:var(--green-bright); text-transform:uppercase; margin-bottom:6px;
+    }
+    .overlay-title {
+      font-family:'Cinzel',serif; font-size:13px;
+      color:var(--gold-light); line-height:1.4;
+    }
+
+    /* CORNER DECO */
+    .gallery-item::before {
+      content:'';
+      position:absolute; top:0; left:0;
+      width:20px; height:20px;
+      border-top:2px solid var(--gold); border-left:2px solid var(--gold);
+      opacity:0; transition:opacity .3s; z-index:5;
+    }
+    .gallery-item::after {
+      content:'';
+      position:absolute; bottom:0; right:0;
+      width:20px; height:20px;
+      border-bottom:2px solid var(--gold); border-right:2px solid var(--gold);
+      opacity:0; transition:opacity .3s; z-index:5;
+    }
+    .gallery-item:hover::before,
+    .gallery-item:hover::after { opacity:1; }
+
+    /* LIGHTBOX */
+    .lightbox {
+      position:fixed; inset:0; z-index:1000;
+      background:rgba(8,16,12,0.96);
+      display:none; align-items:center; justify-content:center;
+      cursor:pointer;
+    }
+    .lightbox.open { display:flex; animation:fadeIn .3s; }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    .lightbox-inner {
+      max-width:90vw; max-height:90vh;
+      position:relative;
+      border:1px solid rgba(201,168,76,0.4);
+    }
+    .lightbox-inner img { max-width:100%; max-height:80vh; display:block; }
+    .lightbox-close {
+      position:absolute; top:-40px; right:0;
+      font-family:'Cinzel',serif; font-size:11px; letter-spacing:3px;
+      color:var(--text-dim); background:none; border:none; cursor:pointer;
+      transition:color .3s;
+    }
+    .lightbox-close:hover { color:var(--gold); }
+
+    /* STATS BAR */
+    .stats-bar {
+      position:relative; z-index:5;
+      display:flex; justify-content:center; gap:50px; flex-wrap:wrap;
+      padding:0 20px 50px;
+    }
+    .stat { text-align:center; }
+    .stat-num {
+      font-family:'Cinzel Decorative',serif; font-size:28px;
+      color:var(--gold); display:block;
+      text-shadow:0 0 20px rgba(201,168,76,0.4);
+    }
+    .stat-label {
+      font-family:'Cinzel',serif; font-size:9px; letter-spacing:3px;
+      color:var(--text-dim); text-transform:uppercase; margin-top:4px;
+    }
+
+    footer {
+      position:relative; z-index:5;
+      border-top:1px solid var(--border); padding:28px 20px;
+      text-align:center;
+      background:linear-gradient(0deg,rgba(26,74,46,0.08),transparent);
+    }
+    footer p { font-family:'Cinzel',serif; font-size:10px; letter-spacing:3px; color:var(--text-dim); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>The Wizarding Chronicle</h1>
+    <p class="subtitle">Harry Potter Fan Log &nbsp;✦&nbsp; Gryffindor Section</p>
+    <nav>
+      <a href="index.html">HOME</a>
+      <a href="blog.html">BLOG</a>
+      <a href="gallery.html" class="active">GALLERY</a>
+      <a href="about.html">ABOUT</a>
+    </nav>
+  </header>
+
+  <div class="page-title">
+    <h2>The Mirror of Erised</h2>
+    <div class="title-deco">Illustration Gallery</div>
+    <div class="page-sep"></div>
+    <p class="page-desc">好きなシーンや好きなキャラを、好きなように描いたもの。上手い下手とかじゃなくて、ただ好きだから描いた。</p>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat"><span class="stat-num">24</span><span class="stat-label">Works</span></div>
+    <div class="stat"><span class="stat-num">7</span><span class="stat-label">Series</span></div>
+    <div class="stat"><span class="stat-num">III</span><span class="stat-label">Years Active</span></div>
+  </div>
+
+  <div class="filter-bar">
+    <button class="filter-btn active">ALL</button>
+    <button class="filter-btn">Portraits</button>
+    <button class="filter-btn">Scenes</button>
+    <button class="filter-btn">Hogwarts</button>
+    <button class="filter-btn">Dark Arts</button>
+  </div>
+
+  <div class="gallery-container">
+
+    <div class="gallery-item" style="--ratio:1.2">
+      <img src="img1.jpg" alt="Gallery image 1" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="gallery-placeholder" style="display:none; --ratio:1.2">
+        <span class="icon">⚡</span>
+        <span class="ph-label">The Boy Who Lived</span>
+      </div>
+      <div class="gallery-overlay">
+        <div class="overlay-tag">Portrait</div>
+        <div class="overlay-title">The Boy Who Lived</div>
+      </div>
+    </div>
+
+    <div class="gallery-item" style="--ratio:0.75">
+      <img src="img2.jpg" alt="Gallery image 2" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="gallery-placeholder" style="display:none; aspect-ratio:0.75">
+        <span class="icon">🦅</span>
+        <span class="ph-label">Gryffindor Spirit</span>
+      </div>
+      <div class="gallery-overlay">
+        <div class="overlay-tag">Hogwarts</div>
+        <div class="overlay-title">Gryffindor Spirit</div>
+      </div>
+    </div>
+
+    <div class="gallery-item">
+      <img src="img3.jpg" alt="Gallery image 3" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="gallery-placeholder" style="display:none">
+        <span class="icon">🔮</span>
+        <span class="ph-label">The Pensieve</span>
+      </div>
+      <div class="gallery-overlay">
+        <div class="overlay-tag">Scene</div>
+        <div class="overlay-title">The Pensieve</div>
+      </div>
+    </div>
+
+    <div class="gallery-item" style="--ratio:1.4">
+      <div class="gallery-placeholder" style="aspect-ratio:1.4">
+        <span class="icon">🧙</span>
+        <span class="ph-label">Albus Dumbledore</span>
+      </div>
+      <div class="gallery-overlay">
+        <div class="overlay-tag">Portrait</div>
+        <div class="overlay-title">Albus Dumbledore</div>
+      </div>
+    </div>
+
+    <div class="gallery-item" style="--ratio:0.85">
+      <div class="gallery-placeholder" style="aspect-ratio:0.85">
+        <span class="icon">🏰</span>
+        <span class="ph-label">Hogwarts at Dusk</span>
+      </div>
+      <div class="gallery-overlay">
+        <div class="overlay-tag">Hogwarts</div>
+        <div class="overlay-title">Hogwarts at Dusk</div>
+      </div>
+    </div>
+
+    <div class="gallery-item">
+      <div class="gallery-placeholder">
+        <span class="icon">🦉</span>
+        <span class="ph-label">Hedwig</span>
+      </div>
+      <div class="gallery-overlay">
+        <div class="overlay-tag">Portrait</div>
+        <div class="overlay-title">Hedwig</div>
+      </div>
+    </div>
+
+    <div class="gallery-item" style="--ratio:1.6">
+      <div class="gallery-placeholder" style="aspect-ratio:1.6">
+        <span class="icon">⚔️</span>
+        <span class="ph-label">Battle of Hogwarts</span>
+      </div>
+      <div class="gallery-overlay">
+        <div class="overlay-tag">Scene</div>
+        <div class="overlay-title">Battle of Hogwarts</div>
+      </div>
+    </div>
+
+    <div class="gallery-item" style="--ratio:0.9">
+      <div class="gallery-placeholder" style="aspect-ratio:0.9">
+        <span class="icon">🪄</span>
+        <span class="ph-label">Expecto Patronum</span>
+      </div>
+      <div class="gallery-overlay">
+        <div class="overlay-tag">Dark Arts</div>
+        <div class="overlay-title">Expecto Patronum</div>
+      </div>
+    </div>
+
+    <div class="gallery-item">
+      <div class="gallery-placeholder">
+        <span class="icon">📚</span>
+        <span class="ph-label">Hermione Granger</span>
+      </div>
+      <div class="gallery-overlay">
+        <div class="overlay-tag">Portrait</div>
+        <div class="overlay-title">Hermione Granger</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-inner">
+      <button class="lightbox-close" id="lightboxClose">✕ CLOSE</button>
+      <img src="" alt="" id="lightboxImg">
+    </div>
+  </div>
+
+  <footer>
+    <p>© The Wizarding Chronicle &nbsp;✦&nbsp; A Fan's Log</p>
+  </footer>
+
+  <script>
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    document.querySelectorAll('.gallery-item img').forEach(img => {
+      img.addEventListener('click', e => {
+        if (!img.complete || img.naturalWidth === 0) return;
+        lightboxImg.src = img.src;
+        lightbox.classList.add('open');
+      });
+    });
+    document.getElementById('lightboxClose').addEventListener('click', () => lightbox.classList.remove('open'));
+    lightbox.addEventListener('click', e => { if(e.target===lightbox) lightbox.classList.remove('open'); });
+  </script>
+</body>
+</html>
